@@ -1,0 +1,120 @@
+{% include 'admin/cabecera.html' %}
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            
+            <div class="card">
+                <div class="card-header">
+                    Datos de la vivienda
+                </div>
+                <div class="card-body">
+                    <form action="/admin/viviendas/guardar" method="post" enctype="multipart/form-data">
+
+                        <div class="" method="post">
+                            <label for="txtNombre" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" name="txtNombre" id="txtNombre" aria-describedby="helpId" placeholder="Escriba el nombre de la vivienda"></label>
+                        </div>
+
+                        <div class="" method="post">
+                            <label for="txtImagen" class="form-label">Imagen:</label>
+                            <input type="file" class="form-control" name="txtImagen" id="txtImagen" aria-describedby="helpId" placeholder="Seleccione una imagen"></label>
+                        </div>
+
+                        <div class="" method="post">
+                            <label for="txtLocacion" class="form-label">Locacion:</label>
+                            <input type="text" class="form-control" name="txtLocacion" id="txtLocacion" aria-describedby="helpId" placeholder="Escriba la locacion de la vivienda"></label>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+
+
+
+                    </form>
+
+
+                    
+                </div>
+                <div class="card-footer text-muted">
+                    
+                </div>
+            </div>
+            
+
+
+
+///tabla de registros
+        </div>
+        <div class="col-md-7">
+
+            
+                <<table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOMBRE</th>
+                            <th>IMAGEN</th>
+                            <th>LOCACION</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in datos %}
+                        <tr>
+                            <td>{{ row[0] }}</td>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>
+                                <form action="/admin/viviendas/borrar" method="post">
+                                    <input value="{{ row[0] }}" type="hidden" name="txtID">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                                <!-- Botón de editar -->
+                                <button class="btn btn-warning" onclick="mostrarFormularioEditar('{{ row[0] }}' , '{{ row[1] }}', '{{ row[2] }}' ,'{{ row[3] }}')">Editar</button>
+            <!-- Formulario de edición (inicialmente oculto) -->
+            <form id="formEditar{{ row[0] }}" action="/admin/viviendas/editar" method="post" style="display: none;">
+                <input value="{{ row[0] }}" type="hidden" name="txtID">
+                <input type="text" name="nuevoNombre" value="{{ row[1] }}">
+                <input type="text" name="nuevaLocacion" value="{{ row[3] }}">
+                <button type="submit">Guardar</button>
+            </form>
+                                
+
+
+
+
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+           
+            
+            
+        </div>
+        
+    </div>
+</div>
+
+<!-- Script para manejar la lógica de mostrar/ocultar los formularios de edición -->
+<script>
+    function mostrarFormularioEditar(id, nombre, locacion) {
+        var formularios = document.querySelectorAll('form[id^="formEditar"]');
+        formularios.forEach(function(formulario) {
+            formulario.style.display = 'none';
+        });
+
+        var formularioEditar = document.getElementById('formEditar' + id);
+        formularioEditar.style.display = 'block';
+
+        formularioEditar.querySelector('input[name="nuevoNombre"]').value = nombre;
+        formularioEditar.querySelector('input[name="nuevaLocacion"]').value = locacion;
+    }
+</script>
+
+
+
+{% include 'admin/pie.html' %}

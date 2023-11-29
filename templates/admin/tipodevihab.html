@@ -1,0 +1,115 @@
+{% include 'admin/cabecera.html' %}
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            
+            <div class="card">
+                <div class="card-header">
+                    Datos de cuantos habitantes viven por el tipo de vivienda
+                </div>
+                <div class="card-body">
+                    <form action="/admin/tipodevihab/guardar" method="post" enctype="multipart/form-data">
+
+                        <div class="" method="post">
+                            <label for="txtTipoDeVi" class="form-label">Tipo De Vienda :</label>
+                            <input type="text" class="form-control" name="txtTipoDeVi" id="txtTipoDeVi" aria-describedby="helpId" placeholder="Escriba el tipo de Vivienda"></label>
+                        </div>
+
+
+                        <div class="" method="post">
+                            <label for="txtPersomas" class="form-label">Personas:</label>
+                            <input type="text" class="form-control" name="txtPersonas" id="txtPersonas" aria-describedby="helpId" placeholder="Digite la cantidad de personas que viven en el tipo de vivienda :"></label>
+                        </div>
+
+
+                       
+
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+
+
+
+                    </form>
+
+
+                    
+                </div>
+                <div class="card-footer text-muted">
+                    
+                </div>
+            </div>
+            
+
+
+
+///tabla de registros
+        </div>
+        <div class="col-md-7">
+
+            
+                <<table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>TIPO DE VIVIENDA</th>
+                            <th>PERSONAS</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in datos %}
+                        <tr>
+                            <td>{{ row[0] }}</td>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                           
+                            <td>
+                                <form action="/admin/tipodevihab/borrar" method="post">
+                                    <input value="{{ row[0] }}" type="hidden" name="txtID">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                                <!-- Botón de editar -->
+                                <button class="btn btn-warning" onclick="mostrarFormularioEditar('{{ row[0] }}' , '{{ row[1] }}', '{{ row[2] }}')">Editar</button>
+            <!-- Formulario de edición (inicialmente oculto) -->
+            <form id="formEditar{{ row[0] }}" action="/admin/tipodevihab/editar" method="post" style="display: none;">
+                <input value="{{ row[0] }}" type="hidden" name="txtID">
+                <input type="text" name="nuevoTipoDeVi" value="{{ row[1] }}">
+                <input type="text" name="nuevoPersonas" value="{{ row[2] }}">
+
+                <button type="submit">Guardar</button>
+            </form>
+                                
+
+
+
+
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+           
+            
+            
+        </div>
+        
+    </div>
+</div>
+
+<!-- Script para manejar la lógica de mostrar/ocultar los formularios de edición -->
+<script>
+    function mostrarFormularioEditar(id, tipovi, cantidad, locacion) {
+        var formularios = document.querySelectorAll('form[id^="formEditar"]');
+        formularios.forEach(function(formulario) {
+            formulario.style.display = 'none';
+        });
+
+        var formularioEditar = document.getElementById('formEditar' + id);
+        formularioEditar.style.display = 'block';
+
+        formularioEditar.querySelector('input[name="nuevoTipoDeVi"]').value = tipovi;
+        formularioEditar.querySelector('input[name="nuevoPersonas"]').value = personas;
+        
+    }
+</script>

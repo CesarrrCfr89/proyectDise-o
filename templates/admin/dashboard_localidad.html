@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visualización de  de las localidades</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Gráfico de localidades y su poblacion</h1>
+    <div id="plotly-graph"></div>
+
+    <script>
+        // Mostrar el gráfico utilizando el HTML generado por Flask
+        var graph_html = '{{ graph_html|safe }}';
+        document.getElementById('plotly-graph').innerHTML = graph_html;
+    </script>
+</body>
+</html>
+
+
+

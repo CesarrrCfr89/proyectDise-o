@@ -1,0 +1,141 @@
+{% include 'admin/cabecera.html' %}
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            
+            <div class="card">
+                <div class="card-header">
+                    DATOS DE LOS CLIENTES
+                </div>
+                <div class="card-body">
+                    <form action="/admin/clientes/guardar" method="post" enctype="multipart/form-data">
+
+                        <div class="" method="post">
+                            <label for="txtNombre" class="form-label">Nombre Completo:</label>
+                            <input type="text" class="form-control" name="txtNombre" id="txtNombre" aria-describedby="helpId" placeholder="Escriba el nombre de la Cliente"></label>
+                        </div>
+
+                        <div class="" method="post">
+                            <label for="txtSexo" class="form-label">Sexo :</label>
+                            <input type="text" class="form-control" name="txtSexo" id="txtSexo" aria-describedby="helpId" placeholder="Escriba el Sexo del cliente"></label>
+                        </div>
+
+                        <div class="" method="post">
+                            <label for="txtDireccion" class="form-label">Direccion:</label>
+                            <input type="text" class="form-control" name="txtDireccion" id="txtDireccion" aria-describedby="helpId" placeholder="Escriba la direccion de el cliente"></label>
+                        </div>
+
+                        <div class="" method="post">
+                            <label for="txtTelefono" class="form-label">Telefono:</label>
+                            <input type="text" class="form-control" name="txtTelefono" id="txtTelefono" aria-describedby="helpId" placeholder="Escriba el telefono del cliente"></label>
+                        </div>
+
+                        <div class="" method="post">
+                            <label for="txtCiudad" class="form-label">Ciudad:</label>
+                            <input type="text" class="form-control" name="txtCiudad" id="txtCiudad" aria-describedby="helpId" placeholder="Escriba la Ciudad de cliente"></label>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+
+
+
+                    </form>
+
+
+                    
+                </div>
+                <div class="card-footer text-muted">
+                    
+                </div>
+            </div>
+            
+
+
+
+///tabla de registros
+        </div>
+        <div class="col-md-7">
+
+            
+                <<table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NOMBRE</th>
+                            <th>SEXO</th>
+                            <th>DIRECCION</th>
+                            <th>TELEFONO</th>
+                            <th>CIUDAD</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in datos %}
+                        <tr>
+                            <td>{{ row[0] }}</td>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{{ row[4] }}</td>
+                            <td>{{ row[5] }}</td>
+                            <td>
+                                <form action="/admin/clientes/borrar" method="post">
+                                    <input value="{{ row[0] }}" type="hidden" name="txtID">
+                                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                                </form>
+                                <!-- Botón de editar -->
+                                <button class="btn btn-warning" onclick="mostrarFormularioEditar('{{ row[0] }}' , '{{ row[1] }}', '{{ row[3] }}' , '{{ row[4] }}' , '{{ row[5] }}')">Editar</button>
+            <!-- Formulario de edición (inicialmente oculto) -->
+            <form id="formEditar{{ row[0] }}" action="/admin/clientes/editar" method="post" style="display: none;">
+                <input value="{{ row[0] }}" type="hidden" name="txtID">
+                <input type="text" name="nuevoNombre" value="{{ row[1] }}">
+                <input type="text" name="nuevoSexo" value="{{ row[2] }}">
+                <input type="text" name="nuevoDireccion" value="{{ row[3] }}">
+                <input type="text" name="nuevoTelefono" value="{{ row[4] }}">
+                <input type="text" name="nuevoCiudad" value="{{ row[5] }}">
+                
+                <button type="submit">Guardar</button>
+            </form>
+                                
+
+
+
+
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+           
+            
+            
+        </div>
+        
+    </div>
+</div>
+
+<!-- Script para manejar la lógica de mostrar/ocultar los formularios de edición -->
+<script>
+    function mostrarFormularioEditar(id, nombre, sexo, direccion , telefono, ciudad) {
+        var formularios = document.querySelectorAll('form[id^="formEditar"]');
+        formularios.forEach(function(formulario) {
+            formulario.style.display = 'none';
+        });
+
+        var formularioEditar = document.getElementById('formEditar' + id);
+        formularioEditar.style.display = 'block';
+
+        formularioEditar.querySelector('input[name="nuevoNombre"]').value = nombre;
+        formularioEditar.querySelector('input[name="nuevoSexo"]').value = sexo;
+        formularioEditar.querySelector('input[name="nuevoDireccion"]').value = direccion;
+        formularioEditar.querySelector('input[name="nuevoTelefono"]').value = telefono;
+        formularioEditar.querySelector('input[name="nuevoCiudad"]').value = ciudad;
+    }
+</script>
+
+
+
+{% include 'admin/pie.html' %}
